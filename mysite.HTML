@@ -1,0 +1,2191 @@
+ht: 100vh;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 600px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tool-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        .tool-button.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .drawing-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .indicator-panel {
+            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .price-ticker {
+            background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .ticker-item {
+            display: inline-block;
+            margin-right: 30px;
+            padding: 8px 15px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .signal-card {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .signal-card.sell {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
+        }
+
+        .technical-indicator {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 16px;
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .currency-pair {
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .currency-pair:hover {
+            background: rgba(75, 85, 99, 0.8);
+            border-color: rgba(59, 130, 246, 0.5);
+            transform: translateX(-5px);
+        }
+
+        .currency-pair.selected {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-color: #3b82f6;
+        }
+
+        .price-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .price-change.positive {
+            color: #10b981;
+        }
+
+        .price-change.negative {
+            color: #ef4444;
+        }
+
+.modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .candlestick {
+            position: relative;
+        }
+
+        .drawing-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .drawing-overlay.active {
+            pointer-events: all;
+        }
+
+        .fibonacci-level {
+            stroke: #fbbf24;
+            stroke-width: 1;
+            stroke-dasharray: 5,5;
+        }
+
+        .support-resistance {
+            stroke: #ef4444;
+            stroke-width: 2;
+        }
+
+        .trend-line {
+            stroke: #3b82f6;
+            stroke-width: 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .live-indicator {
+            animation: pulse 2s infinite;
+        }
+
+        .news-ticker {
+            background: linear-gradient(90deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+            color: #f3f4f6;
+            padding: 12px;
+            overflow: hidden;
+            white-space: nowrap;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .news-ticker span {
+            display: inline-block;
+            animation: scroll 45s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        /* Switch Toggle Styles /
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        / VIP Signal Card */
+        .vip-signal {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            position: relative;
+
+overflow: hidden;
+        }
+
+        .vip-signal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        }
+
+        .vip-signal.buy::before {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .vip-signal.sell::before {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        /* Auto Analysis Animation /
+        .analyzing {
+            animation: analyzing 2s infinite;
+        }
+
+        @keyframes analyzing {
+            0%, 100% { 
+                background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+            }
+            50% { 
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            }
+        }
+
+        / Chat Styles /
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chat-message {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-message.user {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.3);
+            margin-left: 20px;
+        }
+
+        .chat-message.admin {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+        }
+
+        / User Signal Card /
+        .user-signal {
+            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(75, 85, 99, 0.5);
+        }
+
+        / CTA Buttons /
+        .cta-button {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        / Hero Section /
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        / Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+
+}
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #3b82f6;
+        }
+
+        .feature-description {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        /* Testimonials /
+        .testimonial-card {
+            background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #e5e7eb;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #3b82f6;
+        }
+
+        / Stats Section /
+        .stats-section {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        / Quick Registration /
+        .quick-register {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        / Social Links in Settings /
+        .social-setting {
+            background: rgba(55, 65, 81, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .social-setting input {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(75, 85, 99, 0.5);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: white;
+            margin-top: 8px;
+        }
+
+        / Notification /
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        / Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 400px;
+            }
+
+.drawing-tools {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .tool-button {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body class="text-white">
+    <!-- Quick Registration Float -->
+    <div class="quick-register" onclick="showQuickRegister()">
+        🚀 ثبت نام رایگان
+    </div>
+
+    <!-- Header -->
+    <header class="glass-effect border-b border-gray-700 p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <span class="text-xl font-bold">📈</span>
+                    </div>
+                    <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        ForexAI.ir
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <div class="w-3 h-3 bg-green-400 rounded-full live-indicator"></div>
+                    <span class="text-sm text-green-400">آنلاین</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 space-x-reverse" id="headerButtons">
+                <!-- Guest buttons -->
+                <div id="guestButtons">
+                    <button onclick="showLogin()" class="tool-button">
+                        🔑 ورود
+                    </button>
+                    <button onclick="showRegister()" class="cta-button">
+                        📝 ثبت نام رایگان
+                    </button>
+                </div>
+                <!-- User buttons (hidden initially) -->
+                <div id="userButtons" style="display: none;">
+                    <button onclick="showVIPPanel()" class="tool-button bg-gradient-to-r from-yellow-500 to-orange-500">
+                        👑 VIP
+                    </button>
+                    <button onclick="showUserSettings()" class="tool-button">
+                        ⚙️ تنظیمات
+                    </button>
+                    <button onclick="showHelp()" class="tool-button">
+                        ❓ راهنما
+                    </button>
+                    <div class="text-sm bg-gradient-to-r from-green-500 to-blue-500 px-3 py-1 rounded-full" id="userInfo">
+                        کاربر: مهمان
+                    </div>
+                    <button onclick="logout()" class="tool-button bg-gradient-to-r from-red-500 to-red-600">
+                        🚪 خروج
+                    </button>
+                </div>
+                <!-- Admin buttons (hidden initially) -->
+                <div id="adminButtons" style="display: none;">
+                    <button onclick="showAdminPanel()" class="tool-button bg-gradient-to-r from-purple-500 to-pink-500">
+                        👨‍💼 مدیریت کامل
+                    </button>
+                    <button onclick="showVIPPanel()" class="tool-button bg-gradient-to-r from-yellow-500 to-orange-500">
+                        👑 VIP
+                    </button>
+                    <button onclick="showUserSettings()" class="tool-button">
+                        ⚙️ تنظیمات
+                    </button>
+                    <div class="text-sm bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full" id="adminInfo">
+                        مدیر سیستم
+                    </div>
+                    <button onclick="logout()" class="tool-button bg-gradient-to-r from-red-500 to-red-600">
+                        🚪 خروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section for Guests -->
+    <div id="heroSection" class="hero-section">
+        <div class="container mx-auto px-4">
+            <h1 class="hero
+
+-title">🚀 بهترین پلتفرم تحلیل فارکس ایران</h1>
+            <p class="hero-subtitle">با هوش مصنوعی پیشرفته، دقت 89% و سیگنال‌های رایگان</p>
+            <div class="flex justify-center space-x-4 space-x-reverse mb-8">
+                <button onclick="showRegister()" class="cta-button">
+                    🎯 شروع رایگان
+                </button>
+                <button onclick="scrollToFeatures()" class="tool-button">
+                    📊 مشاهده امکانات
+                </button>
+            </div>
+            <div class="flex justify-center space-x-6 space-x-reverse text-sm">
+                <span>✅ رایگان و بدون تعهد</span>
+                <span>✅ دقت 89% تضمینی</span>
+                <span>✅ پشتیبانی 24/7</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">📊 آمار عملکرد</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">89.2%</div>
+                    <div class="stat-label">دقت سیگنال‌ها</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12,847</div>
+                    <div class="stat-label">کاربر فعال</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">سیگنال روزانه</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">پشتیبانی</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div id="featuresSection" class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">🎯 امکانات ویژه</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">هوش مصنوعی پیشرفته</h3>
+                <p class="feature-description">ربات تحلیلگر با دقت 89% که 24 ساعته بازار را تحلیل می‌کند</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">نمودارهای زنده</h3>
+                <p class="feature-description">نمودارهای شمعی با ابزارهای ترسیم حرفه‌ای و اندیکاتورهای تکنیکال</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">سیگنال‌های دقیق</h3>
+                <p class="feature-description">سیگنال‌های خرید و فروش با نقطه ورود، حد سود و حد ضرر مشخص</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">چت عمومی</h3>
+                <p class="feature-description">گفتگو با سایر تریدرها و اشتراک‌گذاری تجربیات و سیگنال‌ها</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👑</div>
+                <h3 class="feature-title">عضویت VIP</h3>
+                <p class="feature-description">دسترسی به سیگنال‌های اختصاصی، تحلیل‌های عمقی و پشتیبانی ویژه</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3 class="feature-title">موبایل فرندلی</h3>
+                <p class="feature-description">دسترسی کامل از موبایل، تبلت و کامپیوتر با رابط کاربری بهینه</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="container mx-auto px-4 py-16">
+        <h2 class="text-3xl font-bold text-center mb-12">💬 نظرات کاربران</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"با سیگنال‌های ForexAI در یک ماه 300% سود کردم. واقعاً فوق‌العاده است!"</p>
+                <p class="testimonial-author">- احمد
+
+رضایی، تریدر حرفه‌ای</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"ربات AI خیلی دقیق کار می‌کنه. من که تازه‌کار بودم الان درآمد ثابت دارم."</p>
+                <p class="testimonial-author">- مریم احمدی، تریدر مبتدی</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"پشتیبانی عالی و سیگنال‌های به موقع. بهترین پلتفرم فارکس ایران!"</p>
+                <p class="testimonial-author">- علی محمدی، سرمایه‌گذار</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Trading Interface (Hidden for guests) -->
+    <div id="tradingInterface" style="display: none;">
+        <!-- News Ticker -->
+        <div class="container mx-auto px-4 pt-4">
+            <div class="news-ticker">
+                <span>
+                    🔥 EUR/USD شکست مقاومت 1.0900 | 💰 طلا در حال تست سطح 2050 | 📊 GBP/JPY روند صعودی قوی | 🚀 USD/CAD سیگنال خرید فعال | ⚡ تحلیل AI: احتمال صعود EUR/GBP 78% | 📈 Bitcoin بالای 45000 دلار | 🎯 XAUUSD هدف 2080 | 💎 فرصت طلایی در AUD/USD
+                </span>
+            </div>
+        </div>
+
+        <div class="container mx-auto p-4">
+            <!-- Price Ticker -->
+            <div class="price-ticker">
+                <div class="flex items-center space-x-6 space-x-reverse overflow-x-auto">
+                    <div class="ticker-item flex-shrink-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">EUR/USD</span>
+                            <div class="mr-4">
+                                <span class="price-display text-sm">1.0856</span>
+                                <span class="price-change positive text-xs mr-2">+0.0023</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticker-item flex-shrink-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">GBP/USD</span>
+                            <div class="mr-4">
+                                <span class="price-display text-sm">1.2734</span>
+                                <span class="price-change negative text-xs mr-2">-0.0045</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticker-item flex-shrink-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">طلا/دلار</span>
+                            <div class="mr-4">
+                                <span class="price-display text-sm">2,045.30</span>
+                                <span class="price-change positive text-xs mr-2">+12.50</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ticker-item flex-shrink-0">
+                        <div class="flex items-center justify-between">
+                            <span class="font-medium">USD/JPY</span>
+                            <div class="mr-4">
+                                <span class="price-display text-sm">149.82</span>
+                                <span class="price-change positive text-xs mr-2">+0.67</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
+                <!-- Currency Pairs Sidebar -->
+                <div class="xl:col-span-1">
+                    <div class="sidebar">
+                        <h2 class="text-xl font-bold mb-4 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            جفت ارزها
+                        </h2>
+                        <div class="space-y-3 max-h-96 overflow-y-auto">
+                            <!-- Major Pairs -->
+                            <div class="text-sm text-blue-400 font-bold mb-2">🌟 جفت ارزهای
+
+اصلی</div>
+                            <div class="currency-pair selected" onclick="selectPair('EURUSD', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">EUR/USD</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">1.0856</div>
+                                        <div class="price-change positive text-xs">+0.21%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="currency-pair" onclick="selectPair('GBPUSD', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">GBP/USD</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">1.2734</div>
+                                        <div class="price-change negative text-xs">-0.35%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="currency-pair" onclick="selectPair('USDJPY', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">USD/JPY</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">149.82</div>
+                                        <div class="price-change positive text-xs">+0.45%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="currency-pair" onclick="selectPair('USDCHF', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">USD/CHF</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">0.8945</div>
+                                        <div class="price-change positive text-xs">+0.13%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cross Pairs -->
+                            <div class="text-sm text-green-400 font-bold mb-2 mt-4">🔄 جفت ارزهای متقابل</div>
+                            <div class="currency-pair" onclick="selectPair('EURGBP', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">EUR/GBP</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">0.8523</div>
+                                        <div class="price-change negative text-xs">-0.21%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="currency-pair" onclick="selectPair('EURJPY', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">EUR/JPY</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">162.45</div>
+                                        <div class="price-change positive text-xs">+0.55%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Commodity Pairs -->
+
+<div class="text-sm text-yellow-400 font-bold mb-2 mt-4">🏗️ ارزهای کالایی</div>
+                            <div class="currency-pair" onclick="selectPair('AUDUSD', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">AUD/USD</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">0.6523</div>
+                                        <div class="price-change positive text-xs">+0.52%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Precious Metals -->
+                            <div class="text-sm text-orange-400 font-bold mb-2 mt-4">💎 فلزات گرانبها</div>
+                            <div class="currency-pair" onclick="selectPair('XAUUSD', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">طلا/دلار</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">2,045.30</div>
+                                        <div class="price-change positive text-xs">+0.62%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="currency-pair" onclick="selectPair('XAGUSD', this)">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">نقره/دلار</span>
+                                    <div class="text-left">
+                                        <div class="price-display text-sm">24.67</div>
+                                        <div class="price-change negative text-xs">-1.36%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Chart Area -->
+                <div class="xl:col-span-3">
+                    <!-- Drawing Tools -->
+                    <div class="drawing-tools">
+                        <div class="flex flex-wrap gap-2">
+                            <button class="tool-button active" onclick="selectTool('cursor')" id="cursor-tool">
+                                🖱️ انتخاب
+                            </button>
+                            <button class="tool-button" onclick="selectTool('line')" id="line-tool">
+                                📏 خط روند
+                            </button>
+                            <button class="tool-button" onclick="selectTool('horizontal')" id="horizontal-tool">
+                                ➖ خط افقی
+                            </button>
+                            <button class="tool-button" onclick="selectTool('vertical')" id="vertical-tool">
+                                ↕️ خط عمودی
+                            </button>
+                            <button class="tool-button" onclick="selectTool('rectangle')" id="rectangle-tool">
+                                ⬜ مستطیل
+                            </button>
+                            <button class="tool-button" onclick="selectTool('fibonacci')" id="fibonacci-tool">
+                                🌀 فیبوناچی
+                            </button>
+                            <button class="tool-button" onclick="selectTool('support')" id="support-tool">
+                                🔴 حمایت/مقاومت
+                            </button>
+                            <button class="tool-button" onclick="selectTool('channel')" id="channel-tool">
+                                📊 کانال
+                            </button>
+                            <button class="tool-button" onclick="clearDrawings()">
+
+🗑️ پاک کردن
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container relative">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-bold text-blue-400" id="chart-title">نمودار شمعی EUR/USD</h2>
+                            <div class="flex space-x-2 space-x-reverse">
+                                <button class="tool-button active" onclick="changeTimeframe('1m')">1M</button>
+                                <button class="tool-button" onclick="changeTimeframe('5m')">5M</button>
+                                <button class="tool-button" onclick="changeTimeframe('15m')">15M</button>
+                                <button class="tool-button" onclick="changeTimeframe('1h')">1H</button>
+                                <button class="tool-button" onclick="changeTimeframe('4h')">4H</button>
+                                <button class="tool-button" onclick="changeTimeframe('1d')">1D</button>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <canvas id="candlestickChart" width="800" height="500"></canvas>
+                            <svg class="drawing-overlay" id="drawingOverlay" width="800" height="500">
+                                <!-- Drawing elements will be added here -->
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Technical Indicators -->
+                    <div class="indicator-panel mt-4">
+                        <h3 class="text-lg font-bold mb-3 text-blue-400">📊 اندیکاتورهای تکنیکال</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">RSI (14)</span>
+                                    <span class="text-green-400 font-bold">67.3</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                                    <div class="bg-green-400 h-2 rounded-full" style="width: 67.3%"></div>
+                                </div>
+                            </div>
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">MACD</span>
+                                    <span class="text-green-400 font-bold">صعودی</span>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">Signal: 0.0023</div>
+                            </div>
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">MA (20)</span>
+                                    <span class="text-blue-400 font-bold">1.0834</span>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">بالای قیمت</div>
+                            </div>
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Bollinger</span>
+                                    <span class="text-yellow-400 font-bold">خنثی</span>
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">وسط باند</div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Indicators -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+
+<div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Stochastic</span>
+                                    <span class="text-red-400 font-bold">78.5</span>
+                                </div>
+                            </div>
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">Williams %R</span>
+                                    <span class="text-green-400 font-bold">-23.4</span>
+                                </div>
+                            </div>
+                            <div class="technical-indicator">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm">CCI</span>
+                                    <span class="text-blue-400 font-bold">145.2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Panel -->
+                <div class="xl:col-span-1">
+                    <!-- AI Analysis -->
+                    <div class="sidebar mb-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-2xl">🤖</span>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold">ربات تحلیلگر AI</h2>
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-green-400 rounded-full mr-2 live-indicator"></div>
+                                    <span class="text-sm text-green-400" id="botStatus">فعال</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bot Settings -->
+                        <div class="bg-gray-800 bg-opacity-50 rounded-lg p-3 mb-3">
+                            <div class="text-sm text-gray-300 mb-2">تنظیمات ربات:</div>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">تحلیل خودکار:</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="autoAnalysis" checked onchange="toggleAutoAnalysis()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">جفت ارز فعلی:</span>
+                                    <span class="text-xs text-blue-400" id="currentPairBot">EUR/USD</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs">حالت:</span>
+                                    <select id="botMode" onchange="changeBotMode()" class="text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                        <option value="manual">دستی</option>
+                                        <option value="auto">خودکار (VIP)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-black bg-opacity-30 rounded-lg p-3 mb-3">
+                            <div class="text-sm text-gray-300 mb-2">تحلیل فوری:</div>
+                            <div class=
+
+"text-white text-sm" id="ai-analysis">
+                                EUR/USD در حال تست مقاومت 1.0870. احتمال شکست 73%
+                            </div>
+                            <div class="mt-2 space-y-1 text-xs">
+                                <div class="flex justify-between">
+                                    <span class="text-green-400">نقطه ورود:</span>
+                                    <span id="entryPoint">1.0856</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-blue-400">حد سود:</span>
+                                    <span id="takeProfit">1.0920</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-red-400">حد ضرر:</span>
+                                    <span id="stopLoss">1.0820</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-yellow-400">ریسک/ریوارد:</span>
+                                    <span id="riskReward">1:1.8</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-400 mt-2" id="analysisTime">30 ثانیه پیش</div>
+                        </div>
+
+                        <div class="flex space-x-2 space-x-reverse mb-2">
+                            <button class="tool-button flex-1" onclick="requestAIAnalysis()">
+                                🔍 تحلیل جدید
+                            </button>
+                            <button class="tool-button flex-1" onclick="addToVIPSignals()" id="addSignalBtn">
+                                ➕ افزودن به VIP
+                            </button>
+                        </div>
+                        <div class="text-xs text-center text-gray-300">
+                            دقت: <span id="accuracy">89.2%</span> | موفق امروز: <span id="successRate">15/17</span>
+                        </div>
+                    </div>
+
+                    <!-- Active Signals -->
+                    <div class="sidebar mb-4">
+                        <h2 class="text-lg font-bold mb-4 text-center bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                            سیگنال‌های فعال
+                        </h2>
+
+                        <div class="signal-card">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold">EUR/USD</span>
+                                <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-sm">خرید 🚀</span>
+                            </div>
+                            <div class="text-sm space-y-1">
+                                <div class="flex justify-between">
+                                    <span>ورود:</span>
+                                    <span>1.0850</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>هدف 1:</span>
+                                    <span>1.0880</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>هدف 2:</span>
+                                    <span>1.0920</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>حد ضرر:</span>
+                                    <span>1.0820</span>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-xs bg-black bg-opacity-20 rounded p-2">
+                                وضعیت: در حال سود 🎯 +23 پیپ
+                            </div>
+                        </div>
+
+                        <div class="signal-card se
+
+ll">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold">GBP/USD</span>
+                                <span class="bg-white bg-opacity-20 px-2 py-1 rounded text-sm">فروش 📉</span>
+                            </div>
+                            <div class="text-sm space-y-1">
+                                <div class="flex justify-between">
+                                    <span>ورود:</span>
+                                    <span>1.2730</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>هدف 1:</span>
+                                    <span>1.2700</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>حد ضرر:</span>
+                                    <span>1.2760</span>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-xs bg-black bg-opacity-20 rounded p-2">
+                                وضعیت: منتظر ورود ⏳
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Signals Section -->
+                    <div class="sidebar mb-4">
+                        <h2 class="text-lg font-bold mb-4 text-center bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
+                            سیگنال‌های کاربران
+                        </h2>
+
+                        <!-- Add Signal Form -->
+                        <div class="bg-gray-800 bg-opacity-50 rounded-lg p-3 mb-3">
+                            <div class="text-sm text-gray-300 mb-2">سیگنال جدید:</div>
+                            <div class="space-y-2">
+                                <select id="userSignalPair" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                    <option value="EURUSD">EUR/USD</option>
+                                    <option value="GBPUSD">GBP/USD</option>
+                                    <option value="USDJPY">USD/JPY</option>
+                                    <option value="XAUUSD">طلا/دلار</option>
+                                </select>
+                                <select id="userSignalType" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                    <option value="buy">خرید</option>
+                                    <option value="sell">فروش</option>
+                                </select>
+                                <input type="text" id="userSignalEntry" placeholder="نقطه ورود" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                <input type="text" id="userSignalTP" placeholder="حد سود" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                <input type="text" id="userSignalSL" placeholder="حد ضرر" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1">
+                                <textarea id="userSignalNote" placeholder="توضیحات (اختیاری)" class="w-full text-xs bg-gray-700 text-white rounded px-2 py-1 h-16"></textarea>
+                                <button onclick="addUserSignal()" class="tool-button w-full">
+                                    📤 ارسال سیگنال
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- User Signals List -->
+                        <div id="userSignalsList" class="space-y-2 max-h-60 overflow-y-auto">
+                            <!-- User signals will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Public Chat -->
+                    <div class="sidebar">
+                        <h2 class="text-lg font-bold mb-4 text-center bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text tex
+
+t-transparent">
+                            💬 چت عمومی
+                        </h2>
+
+                        <div class="chat-container" id="chatContainer">
+                            <!-- Chat messages will be added here -->
+                        </div>
+
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="پیام خود را بنویسید..." onkeypress="handleChatKeyPress(event)">
+                            <button onclick="sendChatMessage()" class="tool-button">
+                                📤
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Register Modal -->
+    <div id="quickRegisterModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">🚀 ثبت نام سریع</h2>
+                <button onclick="closeModal('quickRegisterModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="text-center mb-6">
+                <p class="text-lg text-green-400 mb-2">✅ رایگان و بدون تعهد</p>
+                <p class="text-sm text-gray-300">فقط 30 ثانیه وقت می‌برد!</p>
+            </div>
+            <form onsubmit="handleQuickRegister(event)" class="space-y-4">
+                <div>
+                    <input type="text" id="quickRegName" required placeholder="نام و نام خانوادگی" class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <input type="text" id="quickRegPhone" required placeholder="شماره موبایل" class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <input type="email" id="quickRegEmail" required placeholder="ایمیل" class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div class="text-xs text-gray-400 bg-blue-900 bg-opacity-30 p-3 rounded">
+                    <strong>🎁 هدیه ثبت نام:</strong> دسترسی رایگان به سیگنال‌های VIP به مدت 7 روز!
+                </div>
+                <button type="submit" class="cta-button w-full">🎯 شروع رایگان</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Settings Modal -->
+    <div id="userSettingsModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">⚙️ تنظیمات کاربری</h2>
+                <button onclick="closeModal('userSettingsModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Profile Settings -->
+                <div class="bg-gradient-to-br from-blue-900 to-purple-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-blue-400 mb-3">👤 اطلاعات شخصی</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-1">نام:</label>
+                            <input type="text" id="profileName" class="w-full p-2 bg-gray-700 text-white rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-1">ایمیل:</label>
+                            <input type="email" id="profileEmail" class="w-full p-2 bg-gray-700 text-white rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-1">شماره تماس:</label>
+                            <input type="text" id="profilePhone" class="w-full p-2 bg-gra
+
+y-700 text-white rounded">
+                        </div>
+                        <button onclick="updateProfile()" class="tool-button w-full">
+                            💾 ذخیره تغییرات
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="bg-gradient-to-br from-green-900 to-teal-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-green-400 mb-3">🔗 لینک‌های اجتماعی</h3>
+                    <div class="space-y-3">
+                        <div class="social-setting">
+                            <label class="block text-sm text-gray-300">📷 اینستاگرام:</label>
+                            <input type="text" id="instagramLink" placeholder="@username یا لینک کامل" value="@forex_ai_platform">
+                        </div>
+                        <div class="social-setting">
+                            <label class="block text-sm text-gray-300">✈️ کانال تلگرام:</label>
+                            <input type="text" id="telegramChannel" placeholder="@channel یا لینک کامل" value="@forex_ai_signals">
+                        </div>
+                        <div class="social-setting">
+                            <label class="block text-sm text-gray-300">🤖 ربات تلگرام:</label>
+                            <input type="text" id="telegramBot" placeholder="@bot یا لینک کامل" value="@forex_ai_bot">
+                        </div>
+                        <div class="social-setting">
+                            <label class="block text-sm text-gray-300">🌐 وب سایت:</label>
+                            <input type="text" id="websiteLink" placeholder="https://..." value="https://forexai.ir">
+                        </div>
+                        <div class="social-setting">
+                            <label class="block text-sm text-gray-300">📞 شماره پشتیبانی:</label>
+                            <input type="text" id="supportPhone" placeholder="+98..." value="+98-21-1234567">
+                        </div>
+                        <button onclick="updateSocialLinks()" class="tool-button w-full">
+                            🔄 به‌روزرسانی لینک‌ها
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="mt-6 bg-gray-800 bg-opacity-50 rounded-lg p-4">
+                <h3 class="text-lg font-bold text-yellow-400 mb-3">🔔 تنظیمات اعلانات</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">سیگنال‌های جدید:</span>
+                        <label class="switch">
+                            <input type="checkbox" id="signalNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">پیام‌های چت:</span>
+                        <label class="switch">
+                            <input type="checkbox" id="chatNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">تحلیل‌های AI:</span>
+                        <label class="switch">
+                            <input type="checkbox" id="aiNotifications" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">اخبار مهم:</span>
+                        <label class="switch">
+                            <input type="checkbox" id="newsNotifications" checked>
+                            <span class="slider"></span>
+
+</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">🔑 ورود به سیستم</h2>
+                <button onclick="closeModal('loginModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">نام کاربری:</label>
+                    <input type="text" id="loginUsername" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">رمز عبور:</label>
+                    <input type="password" id="loginPassword" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div class="text-xs text-gray-400 bg-gray-800 p-3 rounded">
+                    <strong>حساب‌های نمونه:</strong><br>
+                    👤 کاربر عادی: user / 123456<br>
+                    👑 کاربر VIP: vip / 123456<br>
+                    👨‍💼 مدیر: admin / admin123
+                </div>
+                <button type="submit" class="cta-button w-full">ورود</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">📝 ثبت نام</h2>
+                <button onclick="closeModal('registerModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <form onsubmit="handleRegister(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">نام کاربری:</label>
+                    <input type="text" id="regUsername" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">ایمیل:</label>
+                    <input type="email" id="regEmail" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">رمز عبور:</label>
+                    <input type="password" id="regPassword" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">تکرار رمز عبور:</label>
+                    <input type="password" id="regPasswordConfirm" required class="w-full p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500">
+                </div>
+                <div class="text-xs text-gray-400 bg-blue-900 bg-opacity-30 p-3 rounded">
+                    <strong>🎁 هدیه ثبت نام:</strong> دسترسی رایگان به سیگنال‌های VIP به مدت 7 روز!
+                </div>
+                <button type="submit" class="cta-button w-full">ثبت نام</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- VIP Panel Modal -->
+    <div id="vipModal" class="modal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">👑 پنل VIP</h2>
+                <button onclick="closeModal('vipModal')" class="text-gray-400 hover:text
+
+-white text-2xl">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Auto Signals -->
+                <div class="bg-gradient-to-br from-yellow-900 to-orange-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-yellow-400 mb-3">🚀 سیگنال‌های خودکار</h3>
+                    <div id="vipSignals" class="space-y-3 max-h-60 overflow-y-auto">
+                        <!-- VIP signals will be added here -->
+                    </div>
+                    <div class="mt-3 text-xs text-center text-gray-300">
+                        سیگنال‌های امروز: <span id="todaySignals">0</span> | موفق: <span id="successfulSignals">0</span>
+                    </div>
+                </div>
+
+                <!-- Premium Features -->
+                <div class="bg-gradient-to-br from-purple-900 to-blue-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-purple-400 mb-3">⭐ امکانات ویژه</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 bg-black bg-opacity-20 rounded">
+                            <span class="text-sm">تحلیل خودکار همه جفت ارزها</span>
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-black bg-opacity-20 rounded">
+                            <span class="text-sm">هشدارهای صوتی</span>
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-black bg-opacity-20 rounded">
+                            <span class="text-sm">تحلیل عمقی با AI</span>
+                            <span class="text-green-400">✓</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-black bg-opacity-20 rounded">
+                            <span class="text-sm">پشتیبانی 24/7</span>
+                            <span class="text-green-400">✓</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIP Controls -->
+            <div class="mt-6 bg-gray-800 bg-opacity-50 rounded-lg p-4">
+                <h3 class="text-lg font-bold text-blue-400 mb-3">🎛️ کنترل‌های VIP</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button class="tool-button" onclick="startAutoTrading()">
+                        🤖 شروع تریدینگ خودکار
+                    </button>
+                    <button class="tool-button" onclick="exportSignals()">
+                        📊 خروجی سیگنال‌ها
+                    </button>
+                    <button class="tool-button" onclick="customizeAlerts()">
+                        🔔 تنظیم هشدارها
+                    </button>
+                    <button class="tool-button" onclick="advancedAnalysis()">
+                        🔬 تحلیل پیشرفته
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content" style="max-width: 1200px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">👨‍💼 پنل مدیریت کامل</h2>
+                <button onclick="closeModal('adminModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- User Management -->
+                <div class="bg-gradient-to-br from-blue-900 to-purple-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-blue-400 mb-3">👥 مدیریت کاربران</h3>
+                    <div class="space-y-2 text-sm">
+
+<div class="flex justify-between">
+                            <span>کاربران فعال:</span>
+                            <span class="text-green-400">1,247</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>کاربران VIP:</span>
+                            <span class="text-yellow-400">89</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>ثبت نام امروز:</span>
+                            <span class="text-blue-400">23</span>
+                        </div>
+                    </div>
+                    <button class="tool-button w-full mt-3" onclick="manageUsers()">
+                        مدیریت کاربران
+                    </button>
+                </div>
+
+                <!-- System Stats -->
+                <div class="bg-gradient-to-br from-green-900 to-teal-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-green-400 mb-3">📊 آمار سیستم</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>سیگنال‌های امروز:</span>
+                            <span class="text-green-400">156</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>دقت کلی:</span>
+                            <span class="text-yellow-400">87.3%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>سرور:</span>
+                            <span class="text-green-400">آنلاین</span>
+                        </div>
+                    </div>
+                    <button class="tool-button w-full mt-3" onclick="viewSystemLogs()">
+                        مشاهده لاگ‌ها
+                    </button>
+                </div>
+
+                <!-- Bot Control -->
+                <div class="bg-gradient-to-br from-purple-900 to-pink-900 bg-opacity-30 rounded-lg p-4">
+                    <h3 class="text-lg font-bold text-purple-400 mb-3">🤖 کنترل ربات</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>وضعیت ربات:</span>
+                            <span class="text-green-400">فعال</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>تحلیل‌های انجام شده:</span>
+                            <span class="text-blue-400">2,847</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>آخرین به‌روزرسانی:</span>
+                            <span class="text-gray-400">2 دقیقه پیش</span>
+                        </div>
+                    </div>
+                    <button class="tool-button w-full mt-3" onclick="configureBotSettings()">
+                        تنظیمات ربات
+                    </button>
+                </div>
+            </div>
+
+            <!-- Social Media Management -->
+            <div class="mt-6 bg-gradient-to-br from-orange-900 to-red-900 bg-opacity-30 rounded-lg p-4">
+                <h3 class="text-lg font-bold text-orange-400 mb-3">📱 مدیریت شبکه‌های اجتماعی</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="social-setting">
+                        <label class="block text-sm text-gray-300">📷 اینستاگرام:</label>
+                        <input type="text" id="adminInstagram" value="@forex_ai_platform">
+                        <button onclick="updateInstagramLink()" class="tool-button w-full mt-2 text-xs">به‌روزرسانی</button>
+                    </div>
+                    <div class="social-setting">
+                        <label class="block text-sm text-gray-300">✈️ تلگرام:</label>
+                        <input type="text" id="adminTelegram" value="@forex_ai_signals">
+
+<button onclick="updateTelegramLink()" class="tool-button w-full mt-2 text-xs">به‌روزرسانی</button>
+                    </div>
+                    <div class="social-setting">
+                        <label class="block text-sm text-gray-300">🤖 ربات:</label>
+                        <input type="text" id="adminBot" value="@forex_ai_bot">
+                        <button onclick="updateBotLink()" class="tool-button w-full mt-2 text-xs">به‌روزرسانی</button>
+                    </div>
+                    <div class="social-setting">
+                        <label class="block text-sm text-gray-300">🌐 وب سایت:</label>
+                        <input type="text" id="adminWebsite" value="https://forexai.ir">
+                        <button onclick="updateWebsiteLink()" class="tool-button w-full mt-2 text-xs">به‌روزرسانی</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Tools -->
+            <div class="mt-6 bg-gradient-to-br from-indigo-900 to-purple-900 bg-opacity-30 rounded-lg p-4">
+                <h3 class="text-lg font-bold text-indigo-400 mb-3">🎨 ابزارهای بازاریابی</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button class="tool-button" onclick="showAdGenerator()">
+                        🎯 مولد تبلیغات
+                    </button>
+                    <button class="tool-button" onclick="downloadAllAds()">
+                        📥 دانلود 100 تبلیغ
+                    </button>
+                    <button class="tool-button" onclick="generateSocialContent()">
+                        📱 محتوای اجتماعی
+                    </button>
+                    <button class="tool-button" onclick="seoOptimization()">
+                        🔍 بهینه‌سازی SEO
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Controls -->
+            <div class="mt-6 bg-gray-800 bg-opacity-50 rounded-lg p-4">
+                <h3 class="text-lg font-bold text-red-400 mb-3">⚠️ کنترل‌های مدیریتی</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button class="tool-button bg-gradient-to-r from-red-600 to-red-700" onclick="emergencyStop()">
+                        🛑 توقف اضطراری
+                    </button>
+                    <button class="tool-button" onclick="backupData()">
+                        💾 پشتیبان‌گیری
+                    </button>
+                    <button class="tool-button" onclick="updateSystem()">
+                        🔄 به‌روزرسانی سیستم
+                    </button>
+                    <button class="tool-button" onclick="broadcastMessage()">
+                        📢 پیام عمومی
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ad Generator Modal (Admin Only) -->
+    <div id="adGeneratorModal" class="modal">
+        <div class="modal-content" style="max-width: 1000px;">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">🎨 مولد تبلیغات اینستاگرام</h2>
+                <button onclick="closeModal('adGeneratorModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <div class="text-center mb-6">
+                <p class="text-lg text-yellow-400 mb-2">📊 100 تبلیغ آماده برای دانلود</p>
+                <p class="text-sm text-gray-300">تبلیغات حرفه‌ای برای اینستاگرام، تلگرام و شبکه‌های اجتماعی</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-br from-blue-900 to-purple-900 bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="text-sm font-bold">تبلیغات موفقیت</div>
+                    <div class="text-xs text-gray-400">25 تبلیغ</div>
+                </div>
+                <di
+
+v class="bg-gradient-to-br from-green-900 to-teal-900 bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">📚</div>
+                    <div class="text-sm font-bold">تبلیغات آموزشی</div>
+                    <div class="text-xs text-gray-400">25 تبلیغ</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-900 to-red-900 bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">🤖</div>
+                    <div class="text-sm font-bold">تبلیغات فناوری</div>
+                    <div class="text-xs text-gray-400">25 تبلیغ</div>
+                </div>
+                <div class="bg-gradient-to-br from-purple-900 to-pink-900 bg-opacity-30 rounded-lg p-4 text-center">
+                    <div class="text-2xl mb-2">👥</div>
+                    <div class="text-sm font-bold">تبلیغات اجتماعی</div>
+                    <div class="text-xs text-gray-400">25 تبلیغ</div>
+                </div>
+            </div>
+
+            <div class="flex justify-center space-x-4 space-x-reverse">
+                <button onclick="downloadAllAds()" class="cta-button">
+                    📥 دانلود همه تبلیغات (100 عدد)
+                </button>
+                <button onclick="previewAds()" class="tool-button">
+                    👁️ پیش‌نمایش
+                </button>
+                <button onclick="customizeAds()" class="tool-button">
+                    🎨 سفارشی‌سازی
+                </button>
+            </div>
+
+            <div class="mt-6 text-xs text-center text-gray-400">
+                <p>📐 ابعاد: 400x400 پیکسل | 🎨 فرمت: PNG | 📱 بهینه برای اینستاگرام</p>
+                <p>🔗 شامل لینک‌های اجتماعی و اطلاعات تماس</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">❓ راهنمای استفاده</h2>
+                <button onclick="closeModal('helpModal')" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4 text-gray-300">
+                <div>
+                    <h3 class="font-bold text-white mb-2">🖱️ ابزارهای ترسیم:</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li>• <strong>خط روند:</strong> دو نقطه را کلیک کنید</li>
+                        <li>• <strong>مستطیل:</strong> گوشه‌ها را مشخص کنید</li>
+                        <li>• <strong>فیبوناچی:</strong> نقطه شروع و پایان را انتخاب کنید</li>
+                        <li>• <strong>حمایت/مقاومت:</strong> سطح مورد نظر را کلیک کنید</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2">📊 تحلیل تکنیکال:</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li>• اندیکاتورها به صورت خودکار محاسبه می‌شوند</li>
+                        <li>• رنگ سبز = سیگنال خرید</li>
+                        <li>• رنگ قرمز = سیگنال فروش</li>
+                        <li>• رنگ زرد = حالت خنثی</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2">🤖 ربات AI:</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li>• تحلیل خودکار هر 30 ثانیه</li>
+                        <li>• دقت بالای 85%</li>
+                        <li>• پیشنهادات ورود و خروج</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-2">💬 چت عمومی:</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li>• گفتگو با سایر تریدرها</li>
+                        <li>• اشتراک‌گذاری سیگنال‌ها</li>
+                        <li>• دریافت نظرات و تجربیات</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPair = 'EURUSD';
+        let currentTool
+
+= 'cursor';
+        let chart;
+        let drawingMode = false;
+        let drawings = [];
+        let isDrawing = false;
+        let startPoint = null;
+
+        // Chart data
+        let candlestickData = [];
+
+        // User system
+        let currentUser = null;
+        let userType = 'guest'; // guest, user, vip, admin
+        let autoAnalysisEnabled = true;
+        let botMode = 'manual';
+        let vipSignals = [];
+        let analysisHistory = [];
+        let userSignals = [];
+        let chatMessages = [];
+
+        // Social media links (editable by admin)
+        let socialLinks = {
+            instagram: '@forex_ai_platform',
+            telegram: '@forex_ai_signals',
+            bot: '@forex_ai_bot',
+            website: 'https://forexai.ir',
+            phone: '+98-21-1234567'
+        };
+
+        // Bot settings
+        let botSettings = {
+            autoAnalysis: true,
+            riskRewardRatio: 1.5,
+            maxRisk: 2, // percentage
+            analysisInterval: 30000, // 30 seconds
+            pairs: ['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD']
+        };
+
+        // SEO and conversion optimization
+        let seoKeywords = [
+            'فارکس', 'تحلیل فارکس', 'سیگنال فارکس', 'هوش مصنوعی', 'AI', 
+            'تریدینگ', 'سرمایه گذاری', 'ربات تحلیلگر', 'نمودار شمعی', 
+            'تحلیل تکنیکال', 'EUR/USD', 'طلا', 'نفت', 'ارز دیجیتال'
+        ];
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (userType === 'guest') {
+                showGuestInterface();
+            } else {
+                showTradingInterface();
+                initCandlestickChart();
+            }
+
+            // Initialize chat
+            initializeChat();
+
+            // SEO optimization
+            optimizeSEO();
+
+            // Auto-update prices
+            setInterval(updatePrices, 5000);
+
+            // Auto AI analysis
+            setInterval(autoAIAnalysis, botSettings.analysisInterval);
+
+            // Add conversion tracking
+            trackUserBehavior();
+        });
+
+        // Show guest interface (landing page)
+        function showGuestInterface() {
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('featuresSection').style.display = 'block';
+            document.getElementById('tradingInterface').style.display = 'none';
+        }
+
+        // Show trading interface for logged in users
+        function showTradingInterface() {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('featuresSection').style.display = 'none';
+            document.getElementById('tradingInterface').style.display = 'block';
+
+            // Initialize chart if not already done
+            if (!chart) {
+                setTimeout(() => {
+                    initCandlestickChart();
+                }, 100);
+            }
+        }
+
+        // Quick registration popup
+        function showQuickRegister() {
+            document.getElementById('quickRegisterModal').style.display = 'block';
+        }
+
+        function handleQuickRegister(event) {
+            event.preventDefault();
+            const name = document.getElementById('quickRegName').value;
+            const phone = document.getElementById('quickRegPhone').value;
+            const email = document.getElementById('quickRegEmail').value;
+
+            // Simulate registration
+            loginUser(name, 'user');
+            closeModal('quickRegisterModal');
+            showNotification('🎉 ثبت نام موفق! 7 روز VIP رایگان فعال شد!');
+
+            // Track conversion
+            trackConversion('quick_register');
+        }
+
+        // Scroll to features
+        function scrollToFeatures() {
+            document.getElementById('featuresSection').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        /
+
+/ SEO Optimization
+        function optimizeSEO() {
+            // Add structured data
+            const structuredData = {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "ForexAI.ir",
+                "applicationCategory": "FinanceApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "IRR"
+                },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "reviewCount": "2847"
+                }
+            };
+
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(structuredData);
+            document.head.appendChild(script);
+
+            // Update meta description dynamically
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.content = `بهترین پلتفرم تحلیل فارکس با هوش مصنوعی در ایران. سیگنال‌های رایگان، دقت 89%، ربات تحلیلگر پیشرفته. ${userType === 'guest' ? 'ثبت نام رایگان!' : 'پنل کاربری'}`;
+            }
+        }
+
+        // Track user behavior for conversion optimization
+        function trackUserBehavior() {
+            // Track page views
+            trackEvent('page_view', { page: userType === 'guest' ? 'landing' : 'dashboard' });
+
+            // Track scroll depth
+            let maxScroll = 0;
+            window.addEventListener('scroll', () => {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll) {
+                    maxScroll = scrollPercent;
+                    if (maxScroll >= 25 && maxScroll < 50) trackEvent('scroll_25');
+                    if (maxScroll >= 50 && maxScroll < 75) trackEvent('scroll_50');
+                    if (maxScroll >= 75) trackEvent('scroll_75');
+                }
+            });
+
+            // Track time on page
+            const startTime = Date.now();
+            window.addEventListener('beforeunload', () => {
+                const timeSpent = Math.round((Date.now() - startTime) / 1000);
+                trackEvent('time_on_page', { seconds: timeSpent });
+            });
+        }
+
+        function trackEvent(eventName, data = {}) {
+            // In a real application, this would send data to analytics
+            console.log(`Event: ${eventName}`, data);
+        }
+
+        function trackConversion(type) {
+            trackEvent('conversion', { type: type, timestamp: Date.now() });
+        }
+
+        // Initialize chat system
+        function initializeChat() {
+            // Add some sample messages
+            addChatMessage('سیستم', 'خوش آمدید به چت عمومی ForexAI! 🎉', 'system');
+            addChatMessage('احمد رضایی', 'سلام دوستان، EUR/USD امروز خیلی قوی حرکت کرده', 'user');
+            addChatMessage('مریم احمدی', 'بله، من هم سیگنال خرید گرفتم', 'user');
+            addChatMessage('مدیر', 'سیگنال جدید طلا منتشر شد 🚀', 'admin');
+        }
+
+        function addChatMessage(username, message, type = 'user') {
+            const chatContainer = document.getElementById('chatContainer');
+            if (!chatContainer) return;
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}`;
+
+            const time = new Date().toLocaleTimeString('fa-IR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            messageDiv.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <span class="font-bold text-sm ${type === 'admin' ? 'text-purple-400' : type === 'system' ? 'text-yellow-400' : 'text-blue-400'}">${username}</span>
+
+<span class="text-xs text-gray-400">${time}</span>
+                </div>
+                <div class="text-sm">${message}</div>
+            `;
+
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Store message
+            chatMessages.push({
+                username,
+                message,
+                type,
+                timestamp: Date.now()
+            });
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            if (!input || !input.value.trim()) return;
+
+            if (userType === 'guest') {
+                showNotification('برای ارسال پیام ابتدا وارد شوید');
+                return;
+            }
+
+            const message = input.value.trim();
+            const username = currentUser || 'کاربر';
+
+            addChatMessage(username, message, userType);
+            input.value = '';
+
+            // Simulate responses
+            setTimeout(() => {
+                const responses = [
+                    'جالب بود، ممنون از اشتراک‌گذاری',
+                    'موافقم، تحلیل خوبی بود',
+                    'من هم همین نظر رو دارم',
+                    'سیگنال خوبی بود، مرسی'
+                ];
+                const randomResponse = responses[Math.floor(Math.random()  responses.length)];
+                addChatMessage('کاربر دیگر', randomResponse, 'user');
+            }, 2000 + Math.random()  3000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // User signal system
+        function addUserSignal() {
+            if (userType === 'guest') {
+                showNotification('برای ارسال سیگنال ابتدا وارد شوید');
+                return;
+            }
+
+            const pair = document.getElementById('userSignalPair').value;
+            const type = document.getElementById('userSignalType').value;
+            const entry = document.getElementById('userSignalEntry').value;
+            const tp = document.getElementById('userSignalTP').value;
+            const sl = document.getElementById('userSignalSL').value;
+            const note = document.getElementById('userSignalNote').value;
+
+            if (!entry || !tp || !sl) {
+                showNotification('لطفاً تمام فیلدهای ضروری را پر کنید');
+                return;
+            }
+
+            const signal = {
+                id: Date.now(),
+                username: currentUser,
+                pair,
+                type,
+                entry,
+                takeProfit: tp,
+                stopLoss: sl,
+                note,
+                timestamp: Date.now(),
+                likes: 0,
+                status: 'active'
+            };
+
+            userSignals.unshift(signal);
+            displayUserSignals();
+
+            // Clear form
+            document.getElementById('userSignalEntry').value = '';
+            document.getElementById('userSignalTP').value = '';
+            document.getElementById('userSignalSL').value = '';
+            document.getElementById('userSignalNote').value = '';
+
+            showNotification('سیگنال شما با موفقیت ارسال شد!');
+
+            // Add to chat
+            addChatMessage(currentUser, `سیگنال جدید: ${pair} ${type === 'buy' ? 'خرید' : 'فروش'} - ورود: ${entry}`, userType);
+        }
+
+        function displayUserSignals() {
+            const container = document.getElementById('userSignalsList');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (userSignals.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-400 py-4">هنوز سیگنالی ثبت نشده است</div>';
+                return;
+            }
+
+            userSignals.slice(0, 10).forEach(signal => {
+                const signalDiv = document.createElemen
+
+t('div');
+                signalDiv.className = 'user-signal';
+
+                const timeAgo = getTimeAgo(signal.timestamp);
+
+                signalDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-sm">${signal.pair}</span>
+                        <span class="text-xs px-2 py-1 rounded ${signal.type === 'buy' ? 'bg-green-600' : 'bg-red-600'}">${signal.type === 'buy' ? 'خرید' : 'فروش'}</span>
+                    </div>
+                    <div class="text-xs space-y-1">
+                        <div class="flex justify-between">
+                            <span>ورود:</span>
+                            <span>${signal.entry}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>حد سود:</span>
+                            <span>${signal.takeProfit}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>حد ضرر:</span>
+                            <span>${signal.stopLoss}</span>
+                        </div>
+                    </div>
+                    ${signal.note ? `<div class="text-xs text-gray-400 mt-2">${signal.note}</div>` : ''}
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-blue-400">@${signal.username}</span>
+                        <div class="flex items-center space-x-2 space-x-reverse">
+                            <button onclick="likeSignal(${signal.id})" class="text-xs text-gray-400 hover:text-red-400">
+                                ❤️ ${signal.likes}
+                            </button>
+                            <span class="text-xs text-gray-400">${timeAgo}</span>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(signalDiv);
+            });
+        }
+
+        function likeSignal(signalId) {
+            const signal = userSignals.find(s => s.id === signalId);
+            if (signal) {
+                signal.likes++;
+                displayUserSignals();
+                showNotification('👍 لایک شد!');
+            }
+        }
+
+        function getTimeAgo(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (days > 0) return `${days} روز پیش`;
+            if (hours > 0) return `${hours} ساعت پیش`;
+            if (minutes > 0) return `${minutes} دقیقه پیش`;
+            return 'همین الان';
+        }
+
+        // Authentication functions
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function showRegister() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simple authentication
+            if (username === 'admin' && password === 'admin123') {
+                loginUser('مدیر سیستم', 'admin<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96b6d8af27928d67',t:'MTc1NDU3MDQ2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document
+
+.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
